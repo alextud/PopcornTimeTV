@@ -15,8 +15,8 @@ struct RotateAnimation: ViewModifier {
         content
             .rotationEffect(.degrees(isAnimating ? 360.0 : 0))
             .animation(.linear(duration: 1.0)
-                            .repeatForever(autoreverses: false)
-                )
+                            .repeatForever(autoreverses: false),
+                      value: isAnimating)
             .onAppear {
                 isAnimating = true
             }

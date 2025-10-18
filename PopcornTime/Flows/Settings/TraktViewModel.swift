@@ -32,7 +32,11 @@ class TraktViewModel: ObservableObject {
                 self.displayCode = authorization.userCode
                 self.expiresIn = authorization.expiresInDate
                 self.deviceCode = authorization.deviceCode
-                self.intervalTimer = Timer.scheduledTimer(timeInterval: TimeInterval(authorization.interval), target: self, selector: #selector(self.poll), userInfo: nil, repeats: true)
+                
+                // Schedule timer on main run loop to avoid Swift 6 async context warning
+                let timer = Timer(timeInterval: TimeInterval(authorization.interval), target: self, selector: #selector(self.poll), userInfo: nil, repeats: true)
+                RunLoop.main.add(timer, forMode: .default)
+                self.intervalTimer = timer
             } catch let error {
                 self.error = error
             }

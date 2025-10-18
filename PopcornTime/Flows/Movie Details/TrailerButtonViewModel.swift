@@ -50,7 +50,9 @@ class TrailerButtonViewModel: ObservableObject {
             Task {
                 if let (data, _) = try? await URLSession.shared.data(from: url) {
                     let image = self.makeMetadataItem(.commonIdentifierArtwork, value: data as NSData)
-                    player.currentItem?.externalMetadata.append(image)
+                    Task { @MainActor in
+                        player.currentItem?.externalMetadata.append(image)
+                    }
                 }
             }
         }
