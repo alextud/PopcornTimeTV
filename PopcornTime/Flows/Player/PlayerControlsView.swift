@@ -25,6 +25,7 @@ struct PlayerControlsView: View {
                 .padding([.leading, .trailing], 20)
                 .padding(.bottom, 10)
         }
+        .preferredColorScheme(.dark)
         .accentColor(.white)
     }
     

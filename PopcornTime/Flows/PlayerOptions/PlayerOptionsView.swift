@@ -95,7 +95,7 @@ struct PlayerOptionsView: View {
         }
         .frame(maxWidth: 1024, maxHeight: theme.maxHeight)
         .padding(.bottom, 20)
-        .background(VisualEffectBlur().cornerRadius(10))
+        .background(.regularMaterial).cornerRadius(10)
         .padding(.horizontal, theme.horizontalSpacing)
         .padding(.top, 40)
     }
