@@ -371,8 +371,15 @@ struct SettingsView: View {
     @ViewBuilder
     var openSubtitlesButton: some View {
         let buttonValue = viewModel.isOpenSubtitlesLoggedIn ? "Sign Out".localized : "Sign In".localized
+        let isLoadingView: AnyView = {
+            if !viewModel.isOpenSubtitlesLoading {
+                return AnyView(EmptyView())
+            } else {
+                return AnyView(ProgressView().progressViewStyle(CircularProgressViewStyle()))
+            }
+        }()
         
-        button(text: "OpenSubtitles.com", value: buttonValue) {
+        button(text: "OpenSubtitles.com", value: buttonValue, customView:isLoadingView) {
             if viewModel.isOpenSubtitlesLoggedIn {
                 showOpenSubtitlesLogout = true
             } else {
@@ -396,12 +403,13 @@ struct SettingsView: View {
             Button("Login") {
                 viewModel.openSubtitlesLogin(username: openSubtitlesUsername, password: openSubtitlesPassword)
             }
-            .disabled(openSubtitlesUsername.isEmpty || openSubtitlesPassword.isEmpty || viewModel.isOpenSubtitlesLoggingIn)
+            .disabled(openSubtitlesUsername.isEmpty || openSubtitlesPassword.isEmpty || viewModel.isOpenSubtitlesLoading)
         } message: {
-            if let error = viewModel.openSubtitlesLoginError {
+            if viewModel.isOpenSubtitlesLoading {
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle(tint: .blue))
+            } else if let error = viewModel.openSubtitlesLoginError {
                 Text("Error: \(error)")
-            } else if viewModel.isOpenSubtitlesLoggingIn {
-                Text("Signing in...")
             } else {
                 Text("Sign in to your account to download subtitles")
             }
@@ -421,9 +429,14 @@ struct SettingsView: View {
                 openSubtitlesPassword = ""
             }
         }
+        .onChange(of: viewModel.openSubtitlesLoginError) { loginError in
+            if loginError?.isEmpty == false {
+                showOpenSubtitlesLogin = true
+            }
+        }
     }
     
-    func button(text: LocalizedStringKey, value: String, action: @escaping () -> Void) -> some View {
+    func button(text: LocalizedStringKey, value: String, customView: some View = EmptyView(), action: @escaping () -> Void) -> some View {
         Button(action: {
             action()
         }, label: {
@@ -432,6 +445,9 @@ struct SettingsView: View {
                 Spacer()
                 Text(value)
                     .multilineTextAlignment(.trailing)
+                if !(customView is EmptyView) {
+                    customView
+                }
             }
             .font(.system(size: theme.fontSize, weight: .medium))
         })

@@ -20,7 +20,7 @@ class SettingsViewModel: ObservableObject {
     
     // MARK: - OpenSubtitles
     @Published var isOpenSubtitlesLoggedIn: Bool = SubtitlesApi.shared.isLoggedIn
-    @Published var isOpenSubtitlesLoggingIn: Bool = false
+    @Published var isOpenSubtitlesLoading: Bool = false
     @Published var openSubtitlesLoginError: String?
     
     var lastUpdate: String {
@@ -59,32 +59,33 @@ class SettingsViewModel: ObservableObject {
     func openSubtitlesLogin(username: String, password: String) {
         guard !username.isEmpty && !password.isEmpty else { return }
         
-        isOpenSubtitlesLoggingIn = true
+        isOpenSubtitlesLoading = true
         openSubtitlesLoginError = nil
         
         Task { @MainActor in
             do {
                 _ = try await SubtitlesApi.shared.login(username: username, password: password)
                 self.isOpenSubtitlesLoggedIn = true
-                self.isOpenSubtitlesLoggingIn = false
                 self.openSubtitlesLoginError = nil
             } catch {
-                self.isOpenSubtitlesLoggingIn = false
                 self.openSubtitlesLoginError = error.localizedDescription
+                // Keep the dialog open by not changing the login state
+                // The error message will be displayed in the dialog
             }
+            self.isOpenSubtitlesLoading = false
         }
     }
     
     func openSubtitlesLogout() {
+        self.isOpenSubtitlesLoading = true
         Task { @MainActor in
             do {
                 try await SubtitlesApi.shared.logout()
-                self.isOpenSubtitlesLoggedIn = false
             } catch {
                 print("OpenSubtitles logout error: \(error)")
-                // Even if logout fails, clear the local state
-                self.isOpenSubtitlesLoggedIn = false
             }
+            self.isOpenSubtitlesLoggedIn = false
+            self.isOpenSubtitlesLoading = false
         }
     }
     

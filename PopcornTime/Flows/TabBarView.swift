@@ -82,9 +82,10 @@ struct TabBarView: View {
             
         }
         .environment(\.currentTab, selectedTab)
-        .ignoresSafeArea()
         #if os(macOS)
         .modifier(MacTabBarView(searchModel: searchModel, selectedTab: $selectedTab))
+        #else
+        .ignoresSafeArea()
         #endif
     }
 }

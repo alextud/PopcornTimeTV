@@ -152,11 +152,11 @@ open class SubtitlesApi {
             return configuration
         }()))
         
-        // Make logout request
-        _ = try await logoutClient.request(.delete, path: path).responseData()
-        
         // Clear stored token
         self.bearerToken = nil
+        
+        // Make logout request
+        _ = try await logoutClient.request(.delete, path: path).responseData()
     }
     
     /**
