@@ -27,6 +27,8 @@ class NowPlayingController {
     private(set) var mediaThumbnailer: VLCMediaThumbnailer?
     var onThumbnailCompletion: (_ image: CGImage) -> Void = { _ in }
     
+    private var cachedStreamDuration: Float?
+    
     internal var nowPlayingInfo: [String: Any]? {
         get {
             return MPNowPlayingInfoCenter.default().nowPlayingInfo
@@ -39,6 +41,22 @@ class NowPlayingController {
         self.mediaplayer = mediaplayer
         self.media = media
         self.imageGenerator = AVAssetImageGenerator(asset: AVAsset(url: localPathToMedia))
+        
+        // Load duration asynchronously to avoid deprecation warning
+        Task {
+            await loadStreamDuration()
+        }
+    }
+    
+    @MainActor
+    private func loadStreamDuration() async {
+        do {
+            let duration = try await imageGenerator.asset.load(.duration)
+            cachedStreamDuration = Float(CMTimeGetSeconds(duration) * 1000)
+        } catch {
+            // Fallback to a default value or handle error as needed
+            cachedStreamDuration = 0
+        }
     }
     
     func addRemoteCommandCenterHandlers() {
@@ -133,7 +151,8 @@ class NowPlayingController {
     
     internal var streamDuration: Float {
         guard let remaining = mediaplayer.remainingTime?.value?.floatValue, let elapsed = mediaplayer.time.value?.floatValue else {
-            return Float(CMTimeGetSeconds(imageGenerator.asset.duration) * 1000)
+//            return Float(CMTimeGetSeconds(imageGenerator.asset.duration) * 1000)
+            return cachedStreamDuration ?? 0
         }
         return fabsf(remaining) + elapsed
     }
