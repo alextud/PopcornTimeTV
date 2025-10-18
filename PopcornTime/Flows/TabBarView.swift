@@ -23,17 +23,12 @@ struct TabBarView: View {
         case movies = 0, shows, watchlist, search, downloads, settings
     }
     @State var selectedTab = Selection.movies
-    #if os(macOS)
-    @State var isVisible = false
-    @State var isSearching = false
-    #endif
-    
     @StateObject var searchModel = SearchViewModel()
     
     var body: some View {
-        #if os(iOS) || os(tvOS)
         TabView(selection: $selectedTab) {
-            SearchView()
+            #if os(tvOS) || os(iOS)
+            SearchView(viewModel: searchModel)
                 .tabItem {
                     Image(systemName: "magnifyingglass")
                     #if os(iOS)
@@ -41,6 +36,7 @@ struct TabBarView: View {
                     #endif
                 }
                 .tag(Selection.search)
+            #endif
             MoviesView()
                 .tabItem {
                     #if os(iOS)
@@ -87,55 +83,8 @@ struct TabBarView: View {
         }
         .environment(\.currentTab, selectedTab)
         .ignoresSafeArea()
-        #elseif os(macOS)
-        ZStack {
-            MoviesView()
-                .hide(selectedTab != .movies)
-            ShowsView()
-                .hide(selectedTab != .shows)
-            WatchlistView()
-                .hide(selectedTab != .watchlist)
-            SearchView(viewModel: searchModel)
-                .hide(selectedTab != .search)
-            DownloadsView()
-                .hide(selectedTab != .downloads)
-            ProxySearchStateView(searching: $isSearching)
-        }
-        .environment(\.currentTab, selectedTab)
-        .toolbar(content: {
-            ToolbarItem(placement: .principal) {
-                if selectedTab == .search {
-                    Picker("", selection: $searchModel.selection) {
-                         Text("Movies").tag(SearchViewModel.SearchType.movies)
-                         Text("Shows").tag(SearchViewModel.SearchType.shows)
-                         Text("People").tag(SearchViewModel.SearchType.people)
-                    }
-                    .pickerStyle(.segmented)
-                } else {
-                    Picker("", selection: $selectedTab) {
-                        Text("Movies").tag(Selection.movies)
-                        Text("Shows").tag(Selection.shows)
-                        Text("Watchlist").tag(Selection.watchlist)
-                        Text("Downloads").tag(Selection.downloads)
-                        //                     Image(systemName: "magnifyingglass").tag(Selection.search)
-                    }
-                    .pickerStyle(.segmented)
-                }   
-            }
-        })
-        .searchable(text: $searchModel.search)
-        .onChange(of: selectedTab) { newValue in
-            if selectedTab != .search && isSearching {
-                isSearching = false
-            }
-        }
-        .onChange(of: isSearching) { newValue in
-            if selectedTab != .search && isSearching {
-                selectedTab = .search
-            } else if selectedTab == .search && !isSearching {
-                selectedTab = .movies
-            }
-        }
+        #if os(macOS)
+        .modifier(MacTabBarView(searchModel: searchModel, selectedTab: $selectedTab))
         #endif
     }
 }

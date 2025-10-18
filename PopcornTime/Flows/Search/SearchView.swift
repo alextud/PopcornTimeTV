@@ -218,24 +218,3 @@ struct SearchView_Previews: PreviewProvider {
 //        return searchView
     }
 }
-
-
-struct ProxySearchStateView: View {
-    @Environment(\.isSearching) var isSearching
-    @Environment(\.dismissSearch) private var dismissSearch
-
-    @Binding var searching: Bool
-    
-    var body: some View {
-        EmptyView()
-            .frame(width: 1)
-            .onChange(of: isSearching) { newValue in
-                searching = newValue
-            }
-            .onChange(of: searching) { newValue in
-                if newValue == false && isSearching == true {
-                    dismissSearch()
-                }
-            }
-    }
-}

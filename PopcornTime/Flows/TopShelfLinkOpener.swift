@@ -12,21 +12,15 @@ import ObjectMapper
 
 struct TopShelfLinkOpener: ViewModifier {
     @State var media: Media?
-    @State var showOpenedMedia: Bool = false
     
     func body(content: Content) -> some View {
-        ZStack {
-            NavigationLink(
-                destination: mediaView,
-                isActive: $showOpenedMedia) {
-                    EmptyView()
+        content
+            .onOpenURL { url in
+                openUrl(url: url)
             }
-            .hidden()
-            
-            content
-        }.onOpenURL { url in
-            openUrl(url: url)
-        }
+            .navigationDestination(isPresented: .constant(media != nil)) {
+                mediaView
+            }
     }
     
     @ViewBuilder
@@ -53,10 +47,8 @@ struct TopShelfLinkOpener: ViewModifier {
             switch type {
             case "showMovie":
                 self.media = Mapper<Movie>().map(JSONString: json)
-                showOpenedMedia = true
             case "showShow":
                 self.media = Mapper<Show>().map(JSONString: json)
-                showOpenedMedia = true
             default:
                 break
             }

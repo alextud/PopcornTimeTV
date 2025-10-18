@@ -107,6 +107,9 @@
 		2358EC492793410E00C79643 /* UpNextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23313B33267E3C0000774A85 /* UpNextView.swift */; };
 		2358EC4A2793410F00C79643 /* UpNextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23313B33267E3C0000774A85 /* UpNextView.swift */; };
 		2364708B2694B76E008743CB /* ObjectMapper in Frameworks */ = {isa = PBXBuildFile; productRef = 2364708A2694B76E008743CB /* ObjectMapper */; };
+		236626372EA3F84B005A4C33 /* MacTabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236626362EA3F848005A4C33 /* MacTabBarView.swift */; };
+		236626382EA3F84B005A4C33 /* MacTabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236626362EA3F848005A4C33 /* MacTabBarView.swift */; };
+		236626392EA3F84B005A4C33 /* MacTabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236626362EA3F848005A4C33 /* MacTabBarView.swift */; };
 		236A11B426C6772E00AFF1FD /* PreloadTorrentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23446AC5267FAD000049CC72 /* PreloadTorrentViewModel.swift */; };
 		236A11B526C6773200AFF1FD /* PreloadTorrentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23313B37267E3C2700774A85 /* PreloadTorrentView.swift */; };
 		236A11B626C6774500AFF1FD /* PlayerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23446ACF268054EF0049CC72 /* PlayerViewModel.swift */; };
@@ -483,6 +486,7 @@
 		2353D82826FF47A800C71C09 /* RatingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingsViewModel.swift; sourceTree = "<group>"; };
 		2356F691272DC1E80039DB75 /* TorrentHealth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentHealth.swift; sourceTree = "<group>"; };
 		2358EC452792CA6300C79643 /* PlayTorrentEpisode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayTorrentEpisode.swift; sourceTree = "<group>"; };
+		236626362EA3F848005A4C33 /* MacTabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacTabBarView.swift; sourceTree = "<group>"; };
 		23793D9C26AD950D0094FFA0 /* DownloadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadView.swift; sourceTree = "<group>"; };
 		237EC9F426B842F300EE8B46 /* MPMediaType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MPMediaType.swift; sourceTree = "<group>"; };
 		237EC9FE26B8478100EE8B46 /* PopcornTime.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PopcornTime.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -670,6 +674,7 @@
 			children = (
 				23313B3B267E3CA800774A85 /* TermsOfServiceView.swift */,
 				23313B0F267E39B400774A85 /* TabBarView.swift */,
+				236626362EA3F848005A4C33 /* MacTabBarView.swift */,
 				23313B19267E3A9200774A85 /* LeftSidePanelView.swift */,
 				23E2A6C826EB8C3300F24931 /* TopShelfLinkOpener.swift */,
 				23E4E18426F7425300CFC3F8 /* MagnetTorrentLinkOpener.swift */,
@@ -1183,6 +1188,7 @@
 				23313B12267E3A3900774A85 /* MoviesView.swift in Sources */,
 				23E623A026975AB6007B11EF /* Locale+Langs.swift in Sources */,
 				23DBB51D26ADBF1400AAF824 /* DownloadViewModel.swift in Sources */,
+				236626392EA3F84B005A4C33 /* MacTabBarView.swift in Sources */,
 				2388FD652691EEA900B51201 /* Show+Extension.swift in Sources */,
 				2391BE81268496E300576CAD /* Media + Download.swift in Sources */,
 				2388FD672692019E00B51201 /* EpisodeView.swift in Sources */,
@@ -1313,6 +1319,7 @@
 				23A2BDD326BEDC3E004B864E /* Media + Subtitles.swift in Sources */,
 				23A2BDD026BEDC3E004B864E /* Subtitle + Identifiable.swift in Sources */,
 				23A2BD9126BEDA00004B864E /* WatchlistViewModel.swift in Sources */,
+				236626372EA3F84B005A4C33 /* MacTabBarView.swift in Sources */,
 				23A2BDAB26BEDA19004B864E /* DownloadView.swift in Sources */,
 				23A2BD8E26BED9FA004B864E /* ShowsViewModel.swift in Sources */,
 				23A2BDBC26BEDBB8004B864E /* TVButtonStyle.swift in Sources */,
@@ -1399,6 +1406,7 @@
 			files = (
 				23B24D8026CA963E00B8CD84 /* FullScreenContent.swift in Sources */,
 				23B24D7C26CA7BAE00B8CD84 /* PlayerControlsView.swift in Sources */,
+				236626382EA3F84B005A4C33 /* MacTabBarView.swift in Sources */,
 				23B24D7926CA78B000B8CD84 /* SubtitlesView.swift in Sources */,
 				23A2BD7F26BC5930004B864E /* EpisodesView.swift in Sources */,
 				23B24D6F26CA74A900B8CD84 /* NowPlayingController.swift in Sources */,
