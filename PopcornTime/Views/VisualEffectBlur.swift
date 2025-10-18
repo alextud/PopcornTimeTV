@@ -35,9 +35,12 @@ public struct VisualEffectBlur<Content: View>: View {
     }
     
     public var body: some View {
-        Representable(content: content)
-            .cornerRadius(cornerRadius)
-            .accessibility(hidden: Content.self == EmptyView.self)
+        Rectangle()
+            .fill(.regularMaterial).cornerRadius(cornerRadius)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .overlay(alignment: .center) {
+                content
+            }
     }
     #endif
 }
