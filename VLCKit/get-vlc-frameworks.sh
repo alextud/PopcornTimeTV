@@ -6,9 +6,9 @@
 mkdir -p "VLCKit"
 cd VLCKit
 
-IOS_VERSION="3.6.0-c73b779f-dd8bfdba"
-TV_VERSION="3.6.0-c73b779f-dd8bfdba"
-MAC_VERSION="3.6.0-c73b779f-dd8bfdba"
+IOS_VERSION="3.7.2-3e42ae47-79128878"
+TV_VERSION="3.7.2-3e42ae47-79128878"
+MAC_VERSION="3.7.2-3e42ae47-79128878"
 
 TV_URL="https://download.videolan.org/pub/cocoapods/prod/TVVLCKit-${TV_VERSION}.tar.xz"
 iOS_URL="https://download.videolan.org/pub/cocoapods/prod/MobileVLCKit-${IOS_VERSION}.tar.xz"

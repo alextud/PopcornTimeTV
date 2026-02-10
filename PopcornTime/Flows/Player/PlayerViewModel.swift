@@ -91,8 +91,11 @@ class PlayerViewModel: NSObject, ObservableObject {
         #if os(tvOS) || os(iOS)
         mediaplayer.audio?.passthrough = true
         #endif
-        mediaplayer.media = VLCMedia(url: fromUrl)
-        
+        let vlcMedia = VLCMedia(url: fromUrl)
+        // Set title metadata to prevent crash in VLC's ArtCacheGetDirPath when title is NULL
+        vlcMedia.metaData.title = media.title
+        mediaplayer.media = vlcMedia
+
         self.nowPlaying = NowPlayingController(mediaplayer: mediaplayer, media: media, localPathToMedia: localUrl)
         self.audioController = PlayerAudioModel(mediaplayer: mediaplayer)
         self.subtitleController = PlayerSubtitleModel(media: media, mediaplayer: mediaplayer, directory: directory, localPathToMedia: localUrl)
