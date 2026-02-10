@@ -38,8 +38,11 @@ class PlayerSubtitleModel {
         let vlcAppearance = mediaplayer as VLCFontAppearance
         vlcAppearance.setTextRendererFontSize?(NSNumber(value: settings.size.rawValue))
         vlcAppearance.setTextRendererFontColor?(NSNumber(value: settings.color.rawValue))
-        vlcAppearance.setTextRendererFont?(settings.fontName as NSString)
         vlcAppearance.setTextRendererFontForceBold?(NSNumber(booleanLiteral: settings.style == .bold || settings.style == .boldItalic))
+        // Only set custom font if it's not a system font (system fonts start with ".")
+        if !settings.fontName.hasPrefix(".") {
+            vlcAppearance.setTextRendererFont?(settings.fontName as NSString)
+        }
         
         mediaplayer.media?.addOptions([vlcSettingTextEncoding: settings.encoding])
     }
@@ -76,15 +79,15 @@ class PlayerSubtitleModel {
     func configurePlayer(subtitle: Subtitle?) {
         if let subtitle = subtitle {
             Task { @MainActor in
-                let subtitlePath: URL
-                if subtitle.fileId > 0 {
-                    // Use OpenSubtitles API v1 download for subtitles with fileId
-                    subtitlePath = try await PopcornKit.downloadOpenSubtitleFile(subtitle, downloadDirectory: downloadDirectory)
-                } else {
-                    print("Subtitle has no fileId or link - cannot download")
-                    return
+                do {
+                    guard subtitle.fileId > 0 else {
+                        return
+                    }
+                    let subtitlePath = try await PopcornKit.downloadOpenSubtitleFile(subtitle, downloadDirectory: downloadDirectory)
+                    self.mediaplayer.addPlaybackSlave(subtitlePath, type: .subtitle, enforce: true)
+                } catch {
+                    print("[Subtitle] ", error)
                 }
-                self.mediaplayer.addPlaybackSlave(subtitlePath, type: .subtitle, enforce: true)
             }
         } else {
             mediaplayer.currentVideoSubTitleIndex = NSNotFound // Remove all subtitles
