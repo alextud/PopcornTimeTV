@@ -91,6 +91,7 @@ extension VLCPlayerView {
     func addGestures(viewModel: PlayerViewModel, dismiss: DismissAction) -> some View {
         self
             .ignoresSafeArea()
+            .contentShape(Rectangle())
             .onTapGesture {
                 withAnimation {
                     if viewModel.showInfo == true {

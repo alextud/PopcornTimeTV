@@ -104,6 +104,7 @@ struct VLCPlayerView_iOS: UIViewRepresentable {
     
     func makeUIView(context: Context) -> UIView {
         let view = UIView()
+        view.isUserInteractionEnabled = false
         mediaplayer.drawable = view
         return view
     }
