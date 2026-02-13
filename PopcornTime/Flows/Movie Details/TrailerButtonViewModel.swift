@@ -79,7 +79,7 @@ class TrailerButtonViewModel: ObservableObject {
         }
         
         let video = try await YoutubeApi.getVideo(id: id)
-        guard let url = video.streamingData.hlsManifestUrl else {
+        guard let url = YoutubeApi.bestPlayableURL(from: video) else {
             throw notFoundError
         }
         self.trailerUrl = url
